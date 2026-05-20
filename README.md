@@ -1,357 +1,482 @@
-# NotebookLM Presentation Process Status
+# Slide Creation System Status
 
 Date: 2026-05-20
 
-## Objective
+## Purpose
 
-This workspace is for building a repeatable system to generate high-quality presentations in `NotebookLM`, with a specific immediate use case around the `GLT` mandate groups deck.
+This document defines the current direction for a repeatable slide-creation system.
 
-There are two parallel goals:
+The target is not a one-off deck.
 
-1. Produce a good presentation now.
-2. Build a system where source documents + a high-level brief can reliably generate strong presentations in future.
+The target is a system that:
 
-## Core constraints confirmed
+1. takes source documents plus a high-level brief
+2. generates a strong presentation in `NotebookLM`
+3. stays consistent with your taste
+4. carries visible `ActionAid` character
+5. minimizes post-generation cleanup
 
-### 1. NotebookLM outputs are often effectively final
+## Current conclusion
 
-The generated `.pptx` decks reviewed in this process were flattened slide-image exports rather than normal editable slide decks.
+`NotebookLM` remains the primary generation tool.
 
-Reviewed files:
+Not because it is controllable.
+Because, in practice, it still produces better presentation aesthetics than the alternatives tested here.
 
-- `GLT_Mandate_Blueprint.pptx`
-- `GLT_v3.pptx`
-- `GLT_v4.pptx`
-- `GLT_SemiFinal.pptx`
+The system therefore has to be designed around `NotebookLM`'s real behavior, not ideal presentation-software behavior.
 
-Observed behavior:
+## What NotebookLM is good at
 
-- each slide was exported as a PNG image
-- there were no real editable text objects on slides
-- PowerPoint font/theme settings were therefore mostly irrelevant after export
+It is relatively good at:
 
-Implication:
+- following a clear narrative spine
+- respecting slide order
+- carrying forward major content framing
+- producing visually polished first-pass slides
+- translating a strong brief into a presentation-like output
 
-- style consistency cannot be fixed properly after generation
-- prompt quality matters more than downstream editing instructions
+## What NotebookLM is bad at
 
-### 2. NotebookLM follows structure better than visual styling
+It is unreliable at:
 
-NotebookLM obeyed:
+- exact font control
+- exact brand-style obedience
+- exact layout repetition
+- preserving every detail unless protected explicitly
+- avoiding invented specifics unless constrained hard
+- giving clean editable output
 
-- slide order
-- narrative logic
-- major content framing
-- some visual hierarchy cues
+## Structural constraint that matters most
 
-NotebookLM did not reliably obey:
+The exported `.pptx` output is often effectively flattened.
 
-- font family instructions
-- exact brand-style instructions
-- exact visual discipline
-- anti-genericity instructions
+Observed behavior in generated decks reviewed during this process:
 
-Implication:
-
-- the system must focus on what NotebookLM responds to reliably:
-  - slide intent
-  - hierarchy
-  - compositional logic
-  - density control
-  - explicit non-invention rules
-
-### 3. Exact font control is a false target in NotebookLM
-
-Because the output is usually flattened into images, the real problem is not “wrong font file applied in PowerPoint.”
-
-The real problem is:
-
-- NotebookLM makes visual typography decisions slide by slide
-- those decisions are then baked into raster images
+- slides exported as PNG-based slide images
+- little or no real editable text layer
+- PowerPoint font settings not meaningfully reusable afterward
 
 Implication:
 
-- prompt budget should not be spent on exact font names
-- prompt budget should be spent on visible rendering behavior and layout logic
+- prompt quality is the real design stage
+- refinements after generation are expensive and frustrating
+- exact font instructions are weak leverage
 
-## What happened across versions
+## System objective
 
-### Original baseline: `GLT_Mandate_Blueprint.pptx`
+The system should not aim for:
 
-Strengths:
+- perfect brand compliance at microscopic level
+- exact font-family fidelity
+- exact template behavior
 
-- stronger content credibility
-- better preservation of real material
-- closer to a real leadership working deck
+The system should aim for:
 
-Weaknesses:
+- consistent narrative quality
+- consistent hierarchy
+- consistent taste
+- visible ActionAid flavor
+- strong first-pass slide composition
+- high trustworthiness of content
 
-- generic visual language
-- weak ActionAid flavour
-- average graphic quality
+## The design problem
 
-### `v3` prompt direction
+There are two simultaneous consistency targets:
 
-Files:
+1. consistency with your taste
+2. consistency with ActionAid
 
+These are related but not identical.
+
+### Consistency with your taste means
+
+- sharp editorial hierarchy
+- fewer generic corporate layouts
+- less safe consulting-template logic
+- stronger visual intent
+- slides that feel authored, not assembled
+- slides that are not over-clean at the expense of tension
+
+### Consistency with ActionAid means
+
+- people, power, justice, movement, and practical change remain visible
+- the tone is serious, political, and grounded
+- not a glossy corporate deck
+- not NGO-generic softness
+- not campaign-poster slogans replacing real analysis
+- black/red editorial force, but with institutional credibility
+
+## Current system principles
+
+### 1. Start from slide jobs, not from style prompts
+
+Do not ask NotebookLM to “make a beautiful deck.”
+
+Instead define:
+
+- what each slide must do
+- what must appear
+- what must never be lost
+- what the viewer should understand after seeing it
+
+### 2. Protect facts explicitly
+
+Any deck needs a protected fact layer:
+
+- names
+- dates
+- milestones
+- governance routes
+- numbers
+- strategic tensions
+
+If these are not listed explicitly, NotebookLM may compress, paraphrase, or invent.
+
+### 3. Separate signal slides from evidence slides
+
+This is one of the most important working rules.
+
+Signal slides:
+
+- framing
+- thesis
+- transition
+- decision logic
+- asks
+
+Evidence slides:
+
+- scope
+- workstreams
+- operating detail
+- milestones
+- comparative logic
+- governance flow
+
+If this distinction is not made, NotebookLM tends to do one of two bad things:
+
+- over-simplify evidence slides
+- over-fill signal slides
+
+### 4. Use visible behavioral instructions, not abstract style language
+
+Weak prompt language:
+
+- “use our brand”
+- “be elegant”
+- “use ActionAid style”
+- “use these fonts”
+
+Stronger prompt language:
+
+- oversized black titles
+- high contrast red only for pressure, urgency, or decision signals
+- flat backgrounds
+- one dominant visual move per slide
+- no decorative gradients
+- no generic icon grids
+- no equal visual weight across all boxes
+
+### 5. Constrain invention aggressively
+
+Every prompt should contain an explicit no-invention rule:
+
+- do not invent names
+- do not invent milestones
+- do not invent governance routes
+- do not invent examples unless clearly marked as illustrative
+
+### 6. Do not over-normalize the deck
+
+A bad system makes every deck feel mechanically tidy.
+
+The better target is:
+
+- one coherent visual language
+- but varied slide compositions
+- each slide shaped by its job
+
+## Current prompt architecture
+
+The working prompt should be built in layers.
+
+### Layer 1. System role
+
+What NotebookLM is being asked to do:
+
+- produce a presentation
+- not a document
+- not a summary
+- not a visual report
+
+### Layer 2. Design behavior
+
+Visible rules:
+
+- contrast
+- hierarchy
+- density
+- composition discipline
+- where to use red
+- what generic habits to avoid
+
+### Layer 3. Content protection
+
+Protected facts list:
+
+- names
+- dates
+- required phrases
+- structural logic
+
+### Layer 4. Slide architecture
+
+For each slide:
+
+- title
+- role
+- must-include points
+- what to emphasize
+- what not to reduce or simplify
+
+### Layer 5. Final quality controls
+
+Checklist for the generated deck:
+
+- does it preserve core facts
+- does it feel like one deck
+- is it generic
+- is it too corporate
+- is it too slogan-heavy
+- is it too thin
+
+## What the reusable workflow should be
+
+### Step 1. Gather inputs
+
+Inputs should be separated before prompt writing:
+
+1. source documents
+2. high-level brief
+3. hard facts list
+4. desired slide count
+5. audience
+6. deck purpose
+
+### Step 2. Build the fact lock
+
+Before any style work, extract:
+
+- fixed names
+- fixed dates
+- fixed numbers
+- decisions already made
+- decisions still open
+- relationships and process steps that must remain exact
+
+### Step 3. Define the deck spine
+
+Before writing the final prompt, define:
+
+- opening logic
+- middle logic
+- closing logic
+- where signal slides sit
+- where evidence slides sit
+
+### Step 4. Define slide-by-slide jobs
+
+Each slide should have:
+
+- title
+- purpose
+- 3 to 6 must-include elements
+- dominant message
+- dominant visual move
+
+### Step 5. Write the generation prompt
+
+The prompt should be written as an operating brief, not a style poem.
+
+### Step 6. Generate once
+
+Judge the first generation on system quality, not on perfection.
+
+Questions:
+
+- did the prompt architecture work
+- where did NotebookLM drift
+- what category of failure occurred
+
+### Step 7. Refine surgically
+
+Do not rewrite everything after every generation.
+
+Instead identify failure type:
+
+- too generic
+- too thin
+- too slogan-heavy
+- too dense
+- invented detail
+- weak ActionAid feel
+- weak hierarchy
+
+Then fix the system at that layer.
+
+## Current style direction for the system
+
+This is the current preferred direction.
+
+### Tone
+
+- editorial
+- political
+- serious
+- grounded
+- sharp
+
+Not:
+
+- soft NGO brochure
+- consulting deck
+- campaign poster
+- over-minimal tech deck
+
+### Hierarchy
+
+- strong oversized titles
+- visible contrast between frame and detail
+- clear dominant message on each slide
+- less equal-weight box repetition
+
+### Color logic
+
+- near-black for structure and authority
+- ActionAid red for urgency, pressure, conflict, or emphasis
+- restrained neutrals for support
+
+### Composition
+
+- asymmetry is acceptable
+- every slide should have one dominant move
+- avoid overuse of boxed grids
+- avoid default process arrows unless necessary
+- avoid pseudo-smart decoration
+
+## Failure modes to guard against
+
+### 1. Generic corporate
+
+Symptoms:
+
+- neat but forgettable
+- consultant boxes
+- no political force
+
+### 2. Generic minimalist
+
+Symptoms:
+
+- cleaner than before
+- but thinned out
+- loses serious content
+
+### 3. Slogan drift
+
+Symptoms:
+
+- strong red statements
+- but analysis underneath is weak
+- feels like campaign rhetoric, not leadership material
+
+### 4. Invention drift
+
+Symptoms:
+
+- wrong names
+- invented specifics
+- false examples
+
+### 5. Over-compression
+
+Symptoms:
+
+- strategic content reduced to broad labels
+- no decision-grade detail left
+
+## Quality rubric for future generations
+
+Every generated deck should be judged on:
+
+1. Content integrity
+2. Strategic clarity
+3. Visual hierarchy
+4. ActionAid character
+5. Consistency with your taste
+6. Non-generic composition
+7. Whether it feels usable without major rebuilding
+
+## Current reusable assets
+
+### Base system document
+
+- `NOTEBOOKLM_PRESENTATION_SYSTEM_11SLIDE.md`
+
+Use this as the current structural reference for prompt-building logic, not as a final perfect system.
+
+### Prompt experiments
+
+- `BASE_PROMPT_NOTEBOOKLM_ACTIONAID.txt`
+- `BASE_PROMPT_NOTEBOOKLM_ACTIONAID_Codex.txt`
 - `BASE_PROMPT_NOTEBOOKLM_ACTIONAID_V3.txt`
-- `NOTEBOOKLM_PROMPT_GLT_MANDATE_GROUPS_V3.txt`
-
-What changed:
-
-- reduced dependence on font instructions
-- tighter visual grammar
-- stricter archetypes
-- more minimal composition
-
-Result:
-
-- too compressed
-- lost important decision-grade content
-- cleaner, but intellectually thinner
-- felt generic in a minimalist-strategy way
-
-Conclusion:
-
-- visual discipline improved somewhat
-- content integrity degraded too much
-
-### `v4` prompt direction
-
-Files:
-
 - `BASE_PROMPT_NOTEBOOKLM_ACTIONAID_V4.txt`
-- `NOTEBOOKLM_PROMPT_GLT_MANDATE_GROUPS_V4.txt`
 
-What changed:
+These should be treated as explored directions, not final answers.
 
-- stronger black/red contrast
-- more explicit ActionAid flavour
-- more activist-editorial tone
+What they established:
 
-Result:
+- `v3` showed the risk of over-minimal compression
+- `v4` showed the risk of forcing brand flavour too hard without enough fact protection
 
-- more brand energy
-- but still introduced invented content
-- sometimes drifted into slogan/poster logic
-- still weaker than the original blueprint on trustworthiness
+## Current preferred system direction
 
-Conclusion:
+The best future system should:
 
-- stronger flavour alone is not enough
-- content integrity is the harder constraint
+- be generic in structure
+- be specific in constraints
+- be consistent in taste
+- be visibly ActionAid
+- protect content aggressively
+- distinguish signal slides from evidence slides
+- guide composition without over-templating every slide
 
-## Critical scope correction from the user
+## What this means operationally
 
-The most important clarification in the whole process was that the deck is not just “about mandate groups.”
+The system should evolve toward:
 
-The real narrative is:
+1. one reusable NotebookLM operating prompt
+2. one reusable ActionAid design-behavior layer
+3. one reusable fact-lock section
+4. one reusable slide-job template
+5. one post-generation evaluation rubric
 
-1. ActionAid identity evolution toward rooted `people power`
-2. why mandate groups exist
-3. the bridge from now to `July 2028`
-4. the four groups
-5. how groups interact and deliver
-6. one vertical slide per group
-7. governance / operating flow
-8. what is needed from `CD Forum / ILT`
+Then each new deck only swaps in:
 
-This led to the final `11-slide` architecture.
-
-## Current best NotebookLM system artifacts
-
-### Reusable system
-
-Primary reusable system file:
-
-- `NOTEBOOKLM_PRESENTATION_SYSTEM_11SLIDE.md`
-
-Purpose:
-
-- defines the repeatable workflow
-- source docs + high-level brief + hard facts + slide intent -> final prompt
-
-Main logic:
-
-- do not let NotebookLM infer the deck logic by itself
-- define slide jobs explicitly
-- define facts that must not be invented or changed
-
-### Current GLT-specific prompt
-
-Primary GLT prompt:
-
-- `GLT/outputs/mandate_groups_analysis/NOTEBOOKLM_PROMPT_GLT_11SLIDES_FINAL.txt`
-
-This is the strongest prompt produced in this process for the GLT deck because it:
-
-- follows the corrected `11-slide` structure
-- protects verified content better than `v3/v4`
-- hard-blocks invention of names, dates, and governance routes
-- centers the people-power identity shift correctly
-
-## Verified content anchors used
-
-Most important sources:
-
-- `GLT/outputs/mandate_groups_analysis/extracted/27 28 April 2026 GLT communique.txt`
-- `GLT/outputs/mandate_groups_analysis/extracted/GLT 27 28.04.2026 detailed notes.txt`
-- `GLT/outputs/mandate_groups_analysis/extracted/GLT Priorities and key dates 2026 April 2026.txt`
-- `GLT/outputs/mandate_groups_analysis/extracted/Paper 0 - Agenda Directors Forum June 2026 DRAFT.txt`
-
-Most important confirmed content used in prompts:
-
-- people power remains central to ActionAid’s identity
-- people power must not remain abstract
-- the distinction is not whether ActionAid delivers, but how it delivers
-- people power is the foundation; tangible solutions are the expression
-- mandate groups are the bridge to the next strategy, not side process
-- first evidence by end-2026
-- first strategy draft by mid-2027
-- strategy live in July 2028
-- Group D governance route:
-  - Arthur drafts
-  - GLT input and endorsement
-  - International Board / General Assembly
-
-## What was tried outside NotebookLM
-
-### Editable PowerPoint rebuilds
-
-Files produced:
-
-- `ActionAid_Strategic_Evolution.pptx`
-- `ActionAid_Strategic_Evolution_v2.pptx`
-- `ActionAid_Strategic_Evolution_Original.pptx`
-
-Scripts:
-
-- `GLT/outputs/mandate_groups_deck/build_actionaid_strategic_evolution.mjs`
-- `GLT/outputs/mandate_groups_deck/build_actionaid_strategic_evolution_original.mjs`
-
-Outcome:
-
-- structurally valid editable decks were produced
-- typography became controllable
-- but visual quality still underperformed relative to user expectations
-- result felt too schematic / too engineered / not artistic enough
-
-Conclusion:
-
-- local scripted PowerPoint is useful for technical editability
-- it is not currently the preferred path for this presentation standard
-
-### Canva route
-
-Attempted:
-
-- checked Canva connector
-- no usable brand kit was available
-- outline-review workflow was triggered, but the user did not see a usable review widget
-
-Conclusion:
-
-- Canva was not operationally usable in this session
-
-## Current practical conclusion
-
-The preferred working path remains `NotebookLM`, despite its flaws.
-
-Reason:
-
-- it still produces better visual presentation quality than the alternatives tested here
-- the pain is in refinement and editability, not in first-pass visual potential
-
-## Current recommendation for future use
-
-### Use NotebookLM for generation
-
-Use:
-
-- `NOTEBOOKLM_PRESENTATION_SYSTEM_11SLIDE.md`
-- deck-specific prompts derived from that system
-
-For GLT specifically, use:
-
-- `GLT/outputs/mandate_groups_analysis/NOTEBOOKLM_PROMPT_GLT_11SLIDES_FINAL.txt`
-
-### Treat prompt construction as the real design stage
-
-Because output slides are often flattened and hard to edit, most quality control must happen before generation:
-
-- slide-by-slide intent
-- mandatory facts
-- anti-invention rules
-- hierarchy and density instructions
-- explicit framing of strategy logic
-
-### Stop spending effort on these weak control surfaces
-
-Avoid over-investing in:
-
-- exact font family instructions
-- exact theme metadata instructions
-- instructions that assume editable PowerPoint text layers
-
-### Focus instead on these high-leverage control surfaces
-
-- narrative spine
-- slide purpose
-- visible compositional guidance
-- which slides are evidence-heavy vs signal-heavy
-- which facts must appear exactly
-- what NotebookLM must not simplify away
-
-## Suggested process going forward
-
-### For any new deck
-
-1. Gather source documents.
-2. Extract non-negotiable facts:
-   - names
-   - dates
-   - milestones
-   - governance routes
-   - strategic tensions
-3. Define the exact slide architecture before writing the final NotebookLM prompt.
-4. Mark each slide as one of:
-   - framing / signal slide
-   - evidence / detail slide
-5. Write the NotebookLM prompt so each slide has:
-   - title
-   - purpose
-   - must-include content
-   - forbidden drift
-6. Generate in NotebookLM.
-7. Refine only where necessary.
-
-### For GLT deck specifically
-
-Stable architecture:
-
-1. rooted identity / people power
-2. why mandate groups
-3. timeline to July 2028
-4. four groups overview
-5. interaction and delivery logic
-6. Group A
-7. Group B
-8. Group C
-9. Group D
-10. governance / operating model
-11. ask to CD Forum / ILT
+- source docs
+- hard facts
+- audience
+- slide architecture
+- deck-specific content
 
 ## Final status
 
-Current status of the process:
+The process is not finished, but the direction is now much clearer.
 
-- the design problem is understood much better than at the start
-- the correct GLT deck architecture is defined
-- the best current reusable NotebookLM system is documented
-- the best current GLT-specific prompt is available
-- editable PowerPoint fallback exists, but is not preferred
-- NotebookLM remains the primary tool
+The right ambition is not:
 
-Most important takeaway:
+- “make NotebookLM obey fonts”
 
-The system should be optimized for `NotebookLM`'s actual behavior, not for ideal PowerPoint behavior.
+The right ambition is:
+
+- “build a disciplined prompt system that makes NotebookLM generate slides in a consistent editorial language, with strong content fidelity and visible ActionAid character.”
